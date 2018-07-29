@@ -18,7 +18,12 @@ def stock_picker(arr)
             sell_index += 1
         end
     end
-    puts "You should buy on Day #{final[0]} and sell on Day #{final[1]}."
+    if final.any?
+        puts "You should buy on Day #{final[0]} and sell on Day #{final[1]}."
+    else
+        puts "You probably shouldn't buy unless you're planning on shorting."
+    end
 end
 
 stock_picker([3,6,9,15,8,6,1,13])
+stock_picker([9,8,7,6,5,4,3,2,1])
