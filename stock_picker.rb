@@ -1,5 +1,5 @@
 def stock_picker(arr)
-   final = [0, 0]
+   final = []
    diff = 0
    sell_index = 1
    buy_index = 0
