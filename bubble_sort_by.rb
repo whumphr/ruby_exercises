@@ -4,7 +4,6 @@ def bubble_sort_by(arr)
         change_record = 0
         i = 0
         while i < arr.length - 1
-            yield arr 
             if yield(arr[i], arr[i+1]) > 0
                 arr[i], arr[i+1] = arr[i+1], arr[i]
                 i += 1
