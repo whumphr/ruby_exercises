@@ -17,30 +17,7 @@ class Game
       @player_two = player_two
       @turns = 0
     end
-=begin    
-    def main_loop
-      draw_board
-      while @turns < 8
-        while victory? == false
-        current = @player_one
-        make_play(current)
-        @turns += 1
-        puts @turns
-        if victory? != true
-            current = @player_two
-            make_play(current)
-            @turns += 1
-            puts @turns
-        end
-        end
-      end
-      if victory?
-        puts "Congratulations! #{current.name} wins!"
-      else
-        puts "Looks like a draw this time..." 
-      end
-    end
-=end
+
     def main_loop
         draw_board
         current = @player_one
