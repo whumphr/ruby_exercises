@@ -76,62 +76,62 @@ class Game
       piece = player.piece
       puts "#{name}, where would you like to place your #{piece}?"
       pos = gets.chomp.capitalize
+      
       case pos
-
-        when "A1"
-          @@board[2][1] = piece
-          @@win_cond[0][0] = piece 
-          @@win_cond[3][0] = piece 
-          @@win_cond[6][0] = piece
-          draw_board
-        when "A2"
-          @@board[4][1] = piece
-          @@win_cond[0][1] = piece
-          @@win_cond[4][0] = piece
-          draw_board
-        when "A3"
-          @@board[6][1] = piece
-          @@win_cond[0][2] = piece
-          @@win_cond[5][0] = piece 
-          @@win_cond[7][0] = piece
-          draw_board
-        when "B1"
-          @@board[2][3] = piece
-          @@win_cond[1][0] = piece
-          @@win_cond[3][1] = piece
-          draw_board
-        when "B2"
-          @@board[4][3] = piece
-          @@win_cond[1][1] = piece
-          @@win_cond[4][1] = piece
-          @@win_cond[6][1] = piece
-          @@win_cond[7][1] = piece
-          draw_board
-        when "B3"
-          @@board[6][3] = piece
-          @@win_cond[1][2] = piece
-          @@win_cond[5][1] = piece
-          draw_board
-        when "C1"
-          @@board[2][5] = piece
-          @@win_cond[2][0] = piece
-          @@win_cond[3][2] = piece
-          @@win_cond[7][2] = piece
-          draw_board
-        when "C2"
-          @@board[4][5] = piece
-          @@win_cond[2][1] = piece 
-          @@win_cond[4][2] = piece
-          draw_board
-        when "C3"
-          @@board[6][5] = piece
-          @@win_cond[2][2] = piece
-          @@win_cond[5][2] = piece
-          @@win_cond[6][2] = piece
-          draw_board
-        else
-            puts "That is not a valid placement."
-            make_play(player)
+      when "A1"
+        @@board[2][1] = piece
+        @@win_cond[0][0] = piece 
+        @@win_cond[3][0] = piece 
+        @@win_cond[6][0] = piece
+        draw_board
+    	when "A2"
+        @@board[4][1] = piece
+        @@win_cond[0][1] = piece
+        @@win_cond[4][0] = piece
+        draw_board
+      when "A3"
+        @@board[6][1] = piece
+        @@win_cond[0][2] = piece
+        @@win_cond[5][0] = piece 
+        @@win_cond[7][0] = piece
+        draw_board
+      when "B1"
+      	@@board[2][3] = piece
+       	@@win_cond[1][0] = piece
+        @@win_cond[3][1] = piece
+        draw_board
+      when "B2"
+        @@board[4][3] = piece
+        @@win_cond[1][1] = piece
+        @@win_cond[4][1] = piece
+        @@win_cond[6][1] = piece
+        @@win_cond[7][1] = piece
+        draw_board
+      when "B3"
+        @@board[6][3] = piece
+        @@win_cond[1][2] = piece
+        @@win_cond[5][1] = piece
+        draw_board
+      when "C1"
+        @@board[2][5] = piece
+        @@win_cond[2][0] = piece
+        @@win_cond[3][2] = piece
+        @@win_cond[7][2] = piece
+        draw_board
+      when "C2"
+        @@board[4][5] = piece
+        @@win_cond[2][1] = piece 
+        @@win_cond[4][2] = piece
+        draw_board
+      when "C3"
+        @@board[6][5] = piece
+        @@win_cond[2][2] = piece
+        @@win_cond[5][2] = piece
+        @@win_cond[6][2] = piece
+        draw_board
+      else
+        puts "That is not a valid placement."
+        make_play(player)
       end
     end
   
