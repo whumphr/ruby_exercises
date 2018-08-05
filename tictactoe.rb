@@ -1,5 +1,4 @@
 class Game 
-
     attr_reader :player_one, :player_two
     attr_accessor :turns
   
@@ -10,8 +9,6 @@ class Game
     
     @@win_cond = [ ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", "",], ["", "", ""] ]
     
-
-
     def initialize(player_one, player_two)
       @player_one = player_one
       @player_two = player_two
@@ -74,9 +71,9 @@ class Game
     def make_play(player)
       name = player.name
       piece = player.piece
-      puts "#{name}, where would you like to place your #{piece}?"
+			
+			puts "#{name}, where would you like to place your #{piece}?"
       pos = gets.chomp.capitalize
-      
       case pos
       when "A1"
         @@board[2][1] = piece
