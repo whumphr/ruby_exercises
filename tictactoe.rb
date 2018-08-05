@@ -1,7 +1,7 @@
 class Game 
 
     attr_reader :player_one, :player_two
-  
+    attr_accessor :turns
   
     @@board = [["  ", "A", "   ", "B", "   ", "C", " "],["  ", " ", "   ", " ", "   ", " ", " "],
             ["1 ", " ", " | ", " ", " | ", " ", " "],[" -", "-", "-|-", "-", "-|-", "-", "-"],
@@ -11,28 +11,54 @@ class Game
     @@win_cond = [ ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", "",], ["", "", ""] ]
     
 
+
     def initialize(player_one, player_two)
       @player_one = player_one
       @player_two = player_two
+      @turns = 0
     end
-    
+=begin    
     def main_loop
       draw_board
-      until victory?
+      while @turns < 8
+        while victory? == false
         current = @player_one
         make_play(current)
+        @turns += 1
+        puts @turns
         if victory? != true
             current = @player_two
             make_play(current)
+            @turns += 1
+            puts @turns
+        end
         end
       end
-      puts "Congratulations! #{current.name} wins!"
+      if victory?
+        puts "Congratulations! #{current.name} wins!"
+      else
+        puts "Looks like a draw this time..." 
+      end
     end
-  
-    def showwin
-        @@win_cond.each {|x| puts x}
+=end
+    def main_loop
+        draw_board
+        current = @player_one
+        make_play(current)
+        @turns += 1
+        if victory? != true && @turns < 9
+            current = @player_two
+            make_play(current)
+            @turns += 1
+        end
+        if victory?
+            puts "Congratulations! #{current.name} wins!"
+        elsif @turns < 9
+            main_loop
+        else
+            puts "Looks like a draw this time..."
+        end
     end
-
 
     def draw_board
       @@board.each do |column|
@@ -68,81 +94,69 @@ class Game
       victory
     end
   
-    def board_set(player)
-      name = player.name
-      piece = player.piece
-      pos = gets.chomp.capitalize
-      case pos 
-        when "A1"
-          @@board[2][1] = piece
-        else
-          puts "This test failed for some reason."
-      end
-      draw_board
-    end
-  
     def make_play(player)
       name = player.name
       piece = player.piece
-      puts "#{name}, where would you like to place your piece?"
+      puts "#{name}, where would you like to place your #{piece}?"
       pos = gets.chomp.capitalize
       case pos
-=begin
-  0  a1 a2 a3
-  1  b1 b2 b3
-  2  c1 c2 C3
-  3  a1 b1 c1
-  4  a2 b2 c2
-  5  a3 b3 C3
-  6  a1 b2 C3
-  7  c1 b2 a3
-=end
+
         when "A1"
           @@board[2][1] = piece
           @@win_cond[0][0] = piece 
           @@win_cond[3][0] = piece 
           @@win_cond[6][0] = piece
+          draw_board
         when "A2"
           @@board[4][1] = piece
           @@win_cond[0][1] = piece
           @@win_cond[4][0] = piece
+          draw_board
         when "A3"
           @@board[6][1] = piece
           @@win_cond[0][2] = piece
           @@win_cond[5][0] = piece 
           @@win_cond[7][0] = piece
+          draw_board
         when "B1"
           @@board[2][3] = piece
           @@win_cond[1][0] = piece
           @@win_cond[3][1] = piece
+          draw_board
         when "B2"
           @@board[4][3] = piece
           @@win_cond[1][1] = piece
           @@win_cond[4][1] = piece
           @@win_cond[6][1] = piece
           @@win_cond[7][1] = piece
+          draw_board
         when "B3"
           @@board[6][3] = piece
           @@win_cond[1][2] = piece
           @@win_cond[5][1] = piece
+          draw_board
         when "C1"
           @@board[2][5] = piece
           @@win_cond[2][0] = piece
           @@win_cond[3][2] = piece
           @@win_cond[7][2] = piece
+          draw_board
         when "C2"
           @@board[4][5] = piece
           @@win_cond[2][1] = piece 
           @@win_cond[4][2] = piece
+          draw_board
         when "C3"
           @@board[6][5] = piece
           @@win_cond[2][2] = piece
           @@win_cond[5][2] = piece
           @@win_cond[6][2] = piece
+          draw_board
+        else
+            puts "That is not a valid placement."
+            make_play(player)
       end
-      draw_board
-
-   end
+    end
   
   end
   
