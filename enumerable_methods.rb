@@ -107,4 +107,4 @@ triple = Proc.new {|x| x * 3}
 #p arr.my_all? {|x| x > 0}
 #p arr.my_any? {|x| x == 2}
 #p arr.my_none? {|x| x == 2}
-#p arr.my_inject {|x, acc| acc * x }
+#p arr.my_inject { |x, acc| acc * x }
