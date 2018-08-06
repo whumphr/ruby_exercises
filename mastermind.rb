@@ -1,43 +1,102 @@
 class Player
-  attr_accessor :name
+  attr_accessor :name, :role
 
-  def initialize(name)
-    @name = name
+  def initialize(name, role)
+		@name = name
+		@role = role
   end
 end
 
 class Mastermind
     
-  def initialize(player)
-    @player = player
+  def initialize
+    @player = make_player
     @code = []
     @guess = []
     @feedback_arr = []
     @turns = 0
+	end
+	
+	def make_player
+    puts "What is your name?"
+    name = gets.chomp.capitalize
+    puts "Do you wish to play as the codemaker or the codebreaker?"
+    role = gets.chomp.downcase
+		Player.new(name, role)
+	end
+
+	def make_code
+		colors = ["Blue", "Red", "Green", "Yellow", "Purple", "Brown"]
+		if @player.role == "codebreaker"	
+    	4.times do
+      	@code << colors.sample
+    	end
+			print "\n"
+		else
+			puts "#{@player.name}, choose 4 among the following colors: "
+			puts "\n"
+   	 	puts "Blue, Red, Green, Yellow, Purple, Brown"
+			puts "\n"
+			puts "Please note that any number of repeats are allowed."
+			puts "Press 'enter' after each color."
+			4.times do
+				input = gets.chomp.capitalize
+				@code << input
+			end
+		end 
   end
 
-  def make_code
-    colors = ["Blue", "Red", "Green", "Yellow", "Purple", "Brown"]
-    4.times do
-      @code << colors.sample
-    end
-      print "\n" 
-  end
-
-  def guess_code
-    puts "#{@player.name}, choose 4 among the following colors:"
-    puts "\n"
-    puts "Blue, Red, Green, Yellow, Purple, Brown"
-    puts "\n"
-    puts "You have " + (12 - @turns).to_s + " turns to guess the hidden code."
-    puts "Press 'enter' after each color."
-    i = 0
-    while i < 4
-      input = gets.chomp.capitalize
-      @guess[i] = input
-      i += 1
-    end
-  end
+	def guess_code
+		if @player.role == "codebreaker"
+    	puts "#{@player.name}, choose 4 among the following colors:"
+    	puts "\n"
+    	puts "Blue, Red, Green, Yellow, Purple, Brown"
+    	puts "\n"
+    	puts "You have " + (12 - @turns).to_s + " turns to guess the hidden code."
+    	puts "Press 'enter' after each color."
+    	i = 0
+    	while i < 4
+      	input = gets.chomp.capitalize
+      	@guess[i] = input
+      	i += 1
+    	end
+		else
+			colors = ["Blue", "Red", "Green", "Yellow", "Purple", "Brown"]
+			if @turns > 0
+				i = 0
+				while i < 4
+					if @guess.include?(@feedback_arr[i])
+						i += 1
+					elsif @feedback_arr[i] == "White"
+						change = false
+						until change
+							ind = rand(4)
+							if ind == 3 && i == 3
+								break
+							else
+								if @guess.include?(@feedback_arr[ind])
+									ind += 1
+								elsif @feedback_arr[ind] == "Incorrect"
+									@guess[ind], @guess[i]  =  @guess[i], @guess[ind]
+									change = true
+								elsif ind == i
+									ind += 1
+								else
+									@guess[ind], @guess[i]  =  @guess[i], @guess[ind]
+									change = true
+								end
+							end
+						end
+					i += 1
+					else
+						new_colors = colors.select {|x| x != @guess[i]}
+						@guess[i] = new_colors.sample
+						i += 1
+					end
+				end
+			end
+		end
+	end
 
   def feedback
     i = 0
@@ -72,9 +131,12 @@ class Mastermind
 
   def victory?
     victory = false
-    if @code == @feedback_arr
+    if @code == @feedback_arr && @player.role == "codebreaker"
       puts "Congratulations #{@player.name}! You won in #{@turns} turns."
-        victory = true            
+				victory = true
+		elsif @code == @feedback_arr
+			puts "Looks like the AI figured out your code in #{@turns}!"
+			victory = true
     end
   end
 
@@ -104,6 +166,5 @@ class Mastermind
   end
 end
 
-me = Player.new("Will")
-game = Mastermind.new(me)
+game = Mastermind.new
 game.main_loop
