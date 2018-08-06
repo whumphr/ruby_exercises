@@ -45,7 +45,7 @@ class Mastermind
 			end
 		end 
   end
-
+  # White does not yet work properly. White guesses are discarded.
 	def guess_code
 		if @player.role == "codebreaker"
     	puts "#{@player.name}, choose 4 among the following colors:"
@@ -135,7 +135,7 @@ class Mastermind
       puts "Congratulations #{@player.name}! You won in #{@turns} turns."
 				victory = true
 		elsif @code == @feedback_arr
-			puts "Looks like the AI figured out your code in #{@turns}!"
+			puts "Looks like the AI figured out your code in #{@turns} turns!"
 			victory = true
     end
   end
@@ -151,14 +151,14 @@ class Mastermind
     while victory? != true && @turns < 12
       if @turns > 0
         puts "\n"
-        puts "Remember your previous guess was:"
+        puts "Remember the previous guess was:"
         puts "#1: #{@guess[0]} #2: #{@guess[1]} #3: #{@guess[2]} #4: #{@guess[3]}"
         puts "\n"
       end
       guess_code
       feedback
     end
-    if @turns == 12
+    if @turns > 12
       puts "You lose! The hidden code was: "
       print @code
       puts "\n"
