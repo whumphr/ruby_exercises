@@ -22,6 +22,7 @@ class Mastermind
     name = gets.chomp.capitalize
     puts "Do you wish to play as the codemaker or the codebreaker?"
     role = gets.chomp.downcase
+    puts "\n"
 		Player.new(name, role)
 	end
 
@@ -62,38 +63,59 @@ class Mastermind
     	end
 		else
 			colors = ["Blue", "Red", "Green", "Yellow", "Purple", "Brown"]
-			if @turns > 0
+      temp_array = Array.new(4)
+      indices = []
+			if @turns == 0
+        4.times do
+          @guess << colors.sample
+        end
+      else
+
+        #First pass will insert correct answers into temp_array as well as choose a new color for incorrect answers
 				i = 0
 				while i < 4
-					if @guess.include?(@feedback_arr[i])
+					case @feedback_arr[i]
+					when @guess[i]
+            temp_array[i] = @guess[i]
 						i += 1
-					elsif @feedback_arr[i] == "White"
-						change = false
-						until change
-							ind = rand(4)
-							if ind == 3 && i == 3
-								break
-							else
-								if @guess.include?(@feedback_arr[ind])
-									ind += 1
-								elsif @feedback_arr[ind] == "Incorrect"
-									@guess[ind], @guess[i]  =  @guess[i], @guess[ind]
-									change = true
-								elsif ind == i
-									ind += 1
-								else
-									@guess[ind], @guess[i]  =  @guess[i], @guess[ind]
-									change = true
-								end
-							end
-						end
-					i += 1
-					else
-						new_colors = colors.select {|x| x != @guess[i]}
-						@guess[i] = new_colors.sample
+					when "Incorrect"
+						temp_array[i] = colors.sample
+            indices << i
 						i += 1
-					end
+          else
+            i += 1
+          end
 				end
+        #Second pass begins by pushing the indices of unassigned spaces in the temp_array to an array called indices
+        temp_array.each_with_index {|item, ind| indices << ind if item == nil }
+				#From indices, the index of the current item i is removed and saved in ind. Ind is used to generate a new random index for the 'White' guess to move to
+				#Only "White" or "Incorrect" indices are valid
+				
+				i = 0
+				random_index = i
+        while i < 4
+					case @feedback_arr[i] 
+					when "White"
+						#ind must not equal the current position or the position of the previous "White"
+            ind = indices.select {|index| index != i && index != random_index}
+            #TEST
+            puts "Ind is equal to #{ind}."
+            random_index = ind[rand(ind.length)]
+            puts "Random index is equal to #{random_index}"
+						if @feedback_arr[random_index] == "Incorrect"
+							new_colors = colors.select {|x| x != @guess[i]}
+              temp_array[i] = new_colors.sample
+              temp_array[random_index] = @guess[i]
+						else
+							temp_array[i] = temp_array[random_index]							
+							temp_array[random_index] = @guess[i]
+            end
+            i += 1
+          else
+            i += 1
+          end
+        end
+        @guess = temp_array
 			end
 		end
 	end
@@ -113,9 +135,8 @@ class Mastermind
       end
     end
     i = 0
-  
     while i < 4
-      if @feedback_arr[i] == "White" &&  @guess.count(@guess[i]) > @code.count(@guess[i])
+      if @feedback_arr[i] == "White" &&  @guess.count(@guess[i]) > @code.count(@guess[i]) 
         @feedback_arr[i] = "Incorrect"
         i += 1
       else
@@ -125,7 +146,11 @@ class Mastermind
 
     @turns += 1
     puts "\n"
+    puts "Your feedback from turn #{@turns}"
+    puts "---------------------------------"
     print "#1: #{@feedback_arr[0]} #2: #{@feedback_arr[1]} #3: #{@feedback_arr[2]} #4: #{@feedback_arr[3]}"
+    puts "\n" 
+    puts "---------------------------------"
     puts "\n" 
   end
 
@@ -158,8 +183,14 @@ class Mastermind
       guess_code
       feedback
     end
-    if @turns > 12
-      puts "You lose! The hidden code was: "
+		if @turns == 12 && victory? != true
+			if @player.role == "codemaker"
+				puts "You defeated the AI!"
+				puts "Your hidden code was: "
+			else
+				puts "You lose!"
+				puts "The hidden code was: "
+			end
       print @code
       puts "\n"
     end
