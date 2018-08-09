@@ -70,7 +70,7 @@ class AI
           forbidden_index << index
         end
       end
-      puts "forbidden_index is #{forbidden_index}"
+      
       i = 0
       new_index = []
       while i < 4
